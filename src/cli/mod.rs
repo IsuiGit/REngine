@@ -1,5 +1,4 @@
-use crate::machine;
-use crate::system;
+use crate::{machine, system, win};
 use std::{
     error::Error,
     io,
@@ -13,14 +12,12 @@ use std::{
 #[derive(Debug)]
 pub struct Cli;
 
-
 impl Cli{
     pub fn init() -> Result<machine::SystemInfo, Box<dyn Error>> {
         Ok(machine::SystemInfo::default())
     }
 
     pub fn cli(sys: machine::SystemInfo){
-        // Описать в доукментации эту часть
         let mut _sys = Arc::new(Mutex::new(sys));
         let run = Arc::new(AtomicBool::new(true));
         let task = {
@@ -31,28 +28,47 @@ impl Cli{
             }
         };
         system::run_mut_task(task, Arc::clone(&run));
-        // Это и так понятно
         println!("\nsystem::run_mut_task started succesefully");
         println!("\nCommands to execute:\n");
-        println!("################################");
-        println!("# sys - show system info       #");
-        println!("# mem - show memory info       #");
-        println!("# processes - system processes #");
-        println!("# exit - to exit REngine CLI   #");
-        println!("################################\n");
+        println!("#####################################################");
+        println!("# sys - show system info                            #");
+        println!("# mem - show memory info                            #");
+        println!("# processes - system processes                      #");
+        println!("# pretty processes - system processes as table view #");
+        println!("# kill - process terminate by PID                   #");
+        println!("# exit - to exit REngine CLI                        #");
+        println!("#####################################################\n");
         println!("REngine (c) IsuiGit\n");
         loop{
             let mut com = String::new();
             let _ = io::stdin().read_line(&mut com);
             match com.trim_end() {
                 "exit" => {
-                    run.store(false, Ordering::SeqCst); // Это тоже описать в доке
-                    thread::sleep(Duration::from_secs(1));
+                    run.store(false, Ordering::SeqCst);
+                    thread::sleep(Duration::from_secs(2));
                     process::exit(0);
                 },
                 "sys" => println!("{}\n", _sys.lock().unwrap().info_as_str().unwrap()),
                 "mem" => println!("{:?}\n", _sys.lock().unwrap().mem_as_vec().unwrap()),
                 "processes" => println!("{:?}\n", _sys.lock().unwrap().processes_as_vec().unwrap()),
+                "pretty processes" => {
+                    println!("\nPretty processes table:\n");
+                    _sys.lock().unwrap().pretty_processes();
+                },
+                "kill" => {
+                    let mut pid_s = String::new();
+                    let _ = io::stdin().read_line(&mut pid_s);
+                    let pid: u32 = match pid_s.trim().parse() {
+                        Ok(n) => n,
+                        Err(_) => {
+                            println!("Error: '{}' is not a valid u32\n", pid_s.trim());
+                            continue;
+                        },
+                    };
+                    let win = win::Win::new();
+                    let errno = win.terminate(pid).unwrap();
+                    println!("{}", errno);
+                }
                 _ => println!("missmatch: {}", com),
             }
         }

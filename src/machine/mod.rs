@@ -42,12 +42,17 @@ impl SystemInfo{
         Ok(vec![self.total, self.used])
     }
 
-    pub fn processes_as_vec(&self) -> Result<Vec<(usize, u32, String)>, Box<dyn Error>> {
-        let mut processes: Vec<(usize, u32, String)> = Vec::new();
-        for index in 1..self.processes.len() {
-            processes.push((index, self.processes[index].0, self.processes[index].1.clone()));
+    pub fn processes_as_vec(&self) -> Result<Vec<(u32, String)>, Box<dyn Error>> {
+        Ok(self.processes.clone())
+    }
+
+    pub fn pretty_processes(&self){
+        let mut pprocesses = self.processes.clone();
+        pprocesses.sort_by(|a, b| a.1.cmp(&b.1));
+        for index in 1..pprocesses.len() {
+            println!("pid: {}\t\t\tname: {}", pprocesses[index].0.to_string(), pprocesses[index].1.clone());
         }
-        Ok(processes)
+        println!("\n");
     }
 
     pub fn update(&mut self){

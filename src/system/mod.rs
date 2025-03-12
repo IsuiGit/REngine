@@ -5,7 +5,6 @@ use std::{
     sync::atomic::{AtomicBool, Ordering}
 };
 
-// Вот это всё объяснить в документации
 pub fn run_mut_task<F>(mut task: F, run: Arc<AtomicBool>)
 where
     F: FnMut() + Send + 'static,

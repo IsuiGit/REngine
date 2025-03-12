@@ -1,6 +1,7 @@
 mod cli;
 mod machine;
 mod system;
+mod win;
 
 use cli::Cli;
 
