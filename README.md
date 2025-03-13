@@ -25,6 +25,6 @@ REngine - приложение для взаимодействия с устро
 
 ### Special thanks
 
-https://doc.rust-lang.org/book/title-page.html
-https://os.phil-opp.com/
-https://habr.com/ru/companies/ruvds/articles/581042/
+- https://doc.rust-lang.org/book/title-page.html
+- https://os.phil-opp.com/
+- https://habr.com/ru/companies/ruvds/articles/581042/
