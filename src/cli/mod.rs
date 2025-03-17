@@ -1,4 +1,4 @@
-use crate::{machine, system, win};
+use crate::{machine, core, win};
 use std::{
     error::Error,
     io,
@@ -9,6 +9,7 @@ use std::{
     sync::atomic::{AtomicBool, Ordering}
 };
 
+
 #[derive(Debug)]
 pub struct Cli;
 
@@ -17,7 +18,7 @@ impl Cli{
         Ok(machine::SystemInfo::default())
     }
 
-    pub fn cli(sys: machine::SystemInfo){
+    pub fn run(sys: machine::SystemInfo){
         let mut _sys = Arc::new(Mutex::new(sys));
         let run = Arc::new(AtomicBool::new(true));
         let task = {
@@ -27,7 +28,7 @@ impl Cli{
                 sys.update();
             }
         };
-        system::run_mut_task(task, Arc::clone(&run));
+        core::run_mut_task(task, Arc::clone(&run));
         println!("\nsystem::run_mut_task started succesefully");
         println!("\nCommands to execute:\n");
         println!("#####################################################");
@@ -56,18 +57,23 @@ impl Cli{
                     _sys.lock().unwrap().pretty_processes();
                 },
                 "kill" => {
-                    let mut pid_s = String::new();
-                    let _ = io::stdin().read_line(&mut pid_s);
-                    let pid: u32 = match pid_s.trim().parse() {
-                        Ok(n) => n,
-                        Err(_) => {
-                            println!("Error: '{}' is not a valid u32\n", pid_s.trim());
-                            continue;
-                        },
-                    };
-                    let win = win::Win::new();
-                    let errno = win.terminate(pid).unwrap();
-                    println!("{}", errno);
+                    if _sys.lock().unwrap().name().unwrap() == "Windows"{
+                        let mut pid_s = String::new();
+                        let _ = io::stdin().read_line(&mut pid_s);
+                        let pid: u32 = match pid_s.trim().parse() {
+                            Ok(n) => n,
+                            Err(_) => {
+                                println!("Error: '{}' is not a valid u32\n", pid_s.trim());
+                                continue;
+                            },
+                        };
+                        let win = win::Win::new();
+                        let errno = win.terminate(pid).unwrap();
+                        println!("{}", errno);
+                    }
+                    else{
+                        println!("This option is not available on your platform.\n")
+                    }
                 }
                 _ => println!("missmatch: {}", com),
             }

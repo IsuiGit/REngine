@@ -1,4 +1,5 @@
-use crate::cli::Cli;
+use crate::{cli::Cli};
+
 use std::{
     sync::Arc,
     thread,
@@ -24,9 +25,9 @@ impl App{
     pub fn run(&self) {
         if !(self.exe_type){
             let mut _sys = Cli::init().unwrap();
-            Cli::cli(_sys);
+            Cli::run(_sys);
         }
-        println!("\nNot yet!");
+        println!("Not yet!")
     }
 }
 
