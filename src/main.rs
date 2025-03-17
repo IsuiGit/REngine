@@ -2,9 +2,10 @@ mod cli;
 mod machine;
 mod core;
 mod win;
-mod gui;
+mod sdl3;
 
 use std::{env, process};
+use std::ffi::CStr;
 
 fn main() {
     let args: Vec<String> = env::args().collect();

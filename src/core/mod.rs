@@ -1,4 +1,4 @@
-use crate::{cli::Cli};
+use crate::{cli::Cli, sdl3::SDL3};
 
 use std::{
     sync::Arc,
@@ -27,7 +27,9 @@ impl App{
             let mut _sys = Cli::init().unwrap();
             Cli::run(_sys);
         }
-        println!("Not yet!")
+        let mut sdl3 = SDL3::default();
+        sdl3.sdl3_init();
+        sdl3.sdl3_quit();
     }
 }
 
