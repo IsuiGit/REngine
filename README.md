@@ -25,14 +25,22 @@ REngine - приложение для взаимодействия с устро
 - Типы:
 	- `SDL_Init(u32)` -> `bool`
 	- `SDL_Quit()` -> `void`
-	- `SDL_GetError()` -> `*const i8`
-	- `SDL_CreateWindow(*const i8, i32, i32, i32, i32, u32)` -> `*mut c_void`
+	- `SDL_GetError()` -> `*const c_char`
+	- `SDL_CreateWindow(*const i8, u32, u32, u32)` -> `*mut c_void`
+	- `SDL_DestroyWindow(*mut c_void)` -> `void`
+	- `SDL_Delay(u32)` -> `void`
+	- `SDL_PollEvent(&mut SDL_Event)` -> `bool`
 
 - Методы
-	- `load_sdl3()` -> `Result<Library, libloading::Error>` загрузка библиотеки SDL3
-	- `sdl3_init(&mut self)` -> `bool` инициализация системы SDL3
-	- `sdl3_quit(&mut self)` -> .. завершение системы SDL3
-	- `sdl3_get_error(&mut self)` -> `*const i8` получение ошибки системы SDL3
+	- `new()` -> `SDL3`
+	- `run(&mut self)` -> `void`
+	- `sdl3_init(&mut self, flags: u32)` -> `void` инициализация системы SDL3
+	- `sdl3_quit(&mut self)` -> `void` завершение системы SDL3
+	- `sdl3_create_window(&mut self, title: &str, w: u32, h: u32, flags: u32)`
+	  -> `*mut c_void` создание окна SDL3
+	- `sdl3_destroy_window(&mut self, window: *mut c_void)` -> `void` удаление окна SDL3
+	- `sdl3_poll_event(&mut self, ms: u32)` -> `void` поток обработки событий SDL3
+	- `sdl3_get_error(&mut self)` -> `String` получение ошибки системы SDL3
 
 - Структуры
 	- `SDL3` -> управляющая структура системы SDL3

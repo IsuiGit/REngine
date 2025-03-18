@@ -8,7 +8,6 @@ use std::{
     thread,
     time::Duration,
     sync::atomic::{AtomicBool, Ordering},
-    ffi::{CStr, CString}
 };
 
 pub struct App{

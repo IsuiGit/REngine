@@ -7,7 +7,7 @@ use sdl3_consts::*;
 use sdl3_structs::*;
 
 use libloading::{Library, Symbol};
-use std::{path::Path, ffi::{c_void, CString}, error::Error, process};
+use std::{path::Path, ffi::{c_void, CString, CStr}};
 
 pub struct SDL3{
     lib: Library,
@@ -24,7 +24,6 @@ impl SDL3{
     pub fn run(&mut self){
         self.sdl3_init(SDL_INIT_VIDEO);
         let window = self.sdl3_create_window("Test Window!", 800, 600, SDL_VOID);
-        println!("{:p}", window);
         if window.is_null(){
             eprintln!("Failed to create window!");
             return;
@@ -92,8 +91,8 @@ impl SDL3{
     pub fn sdl3_get_error(&mut self) -> String {
         unsafe {
             let _sdl3_get_error: Symbol<SDL_GetError> = self.lib.get(b"SDL_GetError").expect("Failed to get symbol SDL_GetError");
-            let error_ptr = _sdl3_get_error();
-            CString::from_raw(error_ptr as *mut i8).into_string().unwrap_or_else(|_| "Unknown error".to_string())
+            let c_err = CStr::from_ptr(_sdl3_get_error());
+            c_err.to_string_lossy().into_owned()
         }
     }
 }
