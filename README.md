@@ -23,13 +23,13 @@ REngine - приложение для взаимодействия с устро
 На данный момент реализованы следующие типы и методы:
 
 - Типы:
-	- `SDL_Init(u32)` -> `bool`
-	- `SDL_Quit()` -> `void`
-	- `SDL_GetError()` -> `*const c_char`
-	- `SDL_CreateWindow(*const i8, u32, u32, u32)` -> `*mut c_void`
-	- `SDL_DestroyWindow(*mut c_void)` -> `void`
-	- `SDL_Delay(u32)` -> `void`
-	- `SDL_PollEvent(&mut SDL_Event)` -> `bool`
+	- `SDL_Init(u32) -> bool`
+	- `SDL_Quit() -> void`
+	- `SDL_GetError() -> *const c_char`
+	- `SDL_CreateWindow(*const i8, u32, u32, u32) -> *mut c_void`
+	- `SDL_DestroyWindow(*mut c_void) -> void`
+	- `SDL_Delay(u32) -> void`
+	- `SDL_PollEvent(&mut SDL_Event) -> bool`
 
 - Методы
 	- `new() -> SDL3`
@@ -42,7 +42,7 @@ REngine - приложение для взаимодействия с устро
 	- `sdl3_get_error(&mut self)` -> `String` получение ошибки системы `SDL3`
 
 - Структуры
-	- `SDL3` -> управляющая структура системы `SDL3`
+	- `SDL3 ->` управляющая структура системы `SDL3`
 
 #### Для чего?
 
