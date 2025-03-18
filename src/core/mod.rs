@@ -1,10 +1,14 @@
-use crate::{cli::Cli, sdl3::SDL3};
+use crate::{
+    cli::Cli,
+    sdl3::SDL3,
+};
 
 use std::{
     sync::Arc,
     thread,
     time::Duration,
-    sync::atomic::{AtomicBool, Ordering}
+    sync::atomic::{AtomicBool, Ordering},
+    ffi::{CStr, CString}
 };
 
 pub struct App{
@@ -19,7 +23,7 @@ impl App{
         if args[1] == "--cli"{
             return Ok(App {exe_type: false});
         }
-        Err("To much args. Calling REngine.exe supports --cli and --gui (as default) arguments!")
+        Err("To much args. Calling REngine.exe supports only --cli argument.")
     }
 
     pub fn run(&self) {
@@ -27,9 +31,8 @@ impl App{
             let mut _sys = Cli::init().unwrap();
             Cli::run(_sys);
         }
-        let mut sdl3 = SDL3::default();
-        sdl3.sdl3_init();
-        sdl3.sdl3_quit();
+        let mut _sdl3 = SDL3::new();
+        _sdl3.run();
     }
 }
 

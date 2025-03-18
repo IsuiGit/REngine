@@ -5,7 +5,6 @@ mod win;
 mod sdl3;
 
 use std::{env, process};
-use std::ffi::CStr;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
