@@ -39,7 +39,7 @@ REngine - приложение для взаимодействия с устро
 	- `sdl3_create_window(&mut self, title: &str, w: u32, h: u32, flags: u32) -> *mut c_void` создание окна `SDL3`
 	- `sdl3_destroy_window(&mut self, window: *mut c_void) -> void` удаление окна `SDL3`
 	- `sdl3_poll_event(&mut self, ms: u32) -> void` поток обработки событий `SDL3`
-	- `sdl3_get_error(&mut self)` -> `String` получение ошибки системы `SDL3`
+	- `sdl3_get_error(&mut self) -> String` получение ошибки системы `SDL3`
 
 - Структуры
 	- `SDL3 ->` управляющая структура системы `SDL3`
